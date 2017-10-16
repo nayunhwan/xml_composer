@@ -40,43 +40,25 @@ module.exports = function(styledString) {
   let flagBold = false;
   let flagItalic = false;
 
-  const queue = [];
+  let queue = [];
 
   styledString.forEach(item => {
-
-
-    if (!flagBold && flagBold !== item.style.BOLD) {
-      flagBold = true;
-    }
-
-    if (!flagItalic && flagItalic !== item.style.ITALIC) {
-      flagItalic = true;
-    }
-
+    if (!flagBold && flagBold !== item.style.BOLD) flagBold = true;
+    if (!flagItalic && flagItalic !== item.style.ITALIC) flagItalic = true;
     if (flagItalic && flagItalic !== item.style.ITALIC) {
-      let tempStr = '';
-      while (queue.length !== 0) {
-        tempStr += queue.shift();
-      }
-      queue.push('<i>' + tempStr + '</i>');
+      queue = ['<i>' + queue.join('') + '</i>'];
       flagItalic = false;
     }
 
     if (flagBold && flagBold !== item.style.BOLD) {
-      let tempStr = '';
-      while (queue.length !== 0) {
-        tempStr += queue.shift();
-      }
-      queue.push('<b>' + tempStr + '</b>');
+      queue = ['<b>' + queue.join('') + '</b>'];
       flagBold = false;
     }
 
-
     if (flagBold || flagItalic) queue.push(item.char);
-    if (!flagBold && !flagItalic) {
-      while (queue.length !== 0) {
-        basedStr += queue.shift();
-      }
+    else if (!flagBold && !flagItalic) {
+      basedStr += queue.join('');
+      queue = [];
       basedStr += item.char;
     }
   });
