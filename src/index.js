@@ -32,9 +32,40 @@ module.exports = function(styledString) {
   // WARNING: Do not use string.replace or regex operations.
 
   // Guard Condition for null or empty value
-  if (styledString.length == 0 || !styledString) {
+  if (!styledString || styledString.length == 0) {
     return '<p></p>';
   }
 
-  return '<p></p>'; // FILL ME
+  let basedStr = '<p>';
+  let flagBold = false;
+  let flagItalic = false;
+
+  const stack = [];
+  styledString.forEach(item => {
+    if (flagItalic && flagItalic !== item.style.ITALIC) {
+      basedStr += '</i>';
+      flagItalic = false;
+    }
+
+    if (flagBold && flagBold !== item.style.BOLD) {
+      basedStr += '</b>';
+      flagBold = false;
+    }
+    if (!flagBold && flagBold !== item.style.BOLD) {
+      basedStr += '<b>';
+      flagBold = true;
+    }
+    if (!flagItalic && flagItalic !== item.style.ITALIC) {
+      basedStr += '<i>';
+      flagItalic = true;
+    }
+    basedStr += item.char;
+  });
+
+  // Close tag
+  if (flagItalic) basedStr += '</i>';
+  if (flagBold) basedStr += '</b>';
+  basedStr += '</p>';
+
+  return basedStr; // FILL ME
 }
