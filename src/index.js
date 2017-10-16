@@ -40,7 +40,6 @@ module.exports = function(styledString) {
   let flagBold = false;
   let flagItalic = false;
 
-  const stack = [];
   styledString.forEach(item => {
     if (flagItalic && flagItalic !== item.style.ITALIC) {
       basedStr += '</i>';
