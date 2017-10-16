@@ -163,4 +163,12 @@ describe('advanced composer test', () => {
       { char: 't', style: { BOLD: false, ITALIC: false } },
     ])).toEqual('<p>test<i><b>b</b>test</i>t<b><i>e</i>s</b>tt</p>');
   });
+
+  it('should return a proper paragraph with mixed text 1', () => {
+    expect(composer([
+      { char: 'i', style: { BOLD: false, ITALIC: true } },
+      { char: 'b', style: { BOLD: true, ITALIC: false } },
+
+    ])).toEqual('<p><i>i</i><b>b</b></p>');
+  });
 });
