@@ -30,5 +30,11 @@ type styledString = styledChar[];
 */
 module.exports = function(styledString) {
   // WARNING: Do not use string.replace or regex operations.
+
+  // Guard Condition for null or empty value
+  if (styledString.length == 0 || !styledString) {
+    return '<p></p>';
+  }
+
   return '<p></p>'; // FILL ME
 }
