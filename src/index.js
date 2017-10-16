@@ -45,7 +45,6 @@ module.exports = function(styledString) {
       basedStr += '</i>';
       flagItalic = false;
     }
-
     if (flagBold && flagBold !== item.style.BOLD) {
       basedStr += '</b>';
       flagBold = false;
