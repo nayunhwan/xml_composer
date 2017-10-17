@@ -49,7 +49,7 @@ module.exports = function(styledString) {
     if (!flagItalic && flagItalic !== item.style.ITALIC) flagItalic = true;
 
     if (flagItalic && !item.style.ITALIC) {
-      let tmpStr = ''
+      let tmpStr = '';
       if (flagBold){
         tmpStr = bothStack.length !== 0 ? `<i>${bothStack.join('')}</i>` : '';
         bothStack = [];
@@ -62,7 +62,7 @@ module.exports = function(styledString) {
       flagItalic = false;
     }
     if (flagBold && !item.style.BOLD) {
-      let tmpStr = ''
+      let tmpStr = '';
       if (flagItalic){
         tmpStr = bothStack.length !== 0 ? `<b>${bothStack.join('')}</b>` : '';
         bothStack = [];
