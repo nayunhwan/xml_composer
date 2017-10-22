@@ -168,7 +168,50 @@ describe('advanced composer test', () => {
     expect(composer([
       { char: 'i', style: { BOLD: false, ITALIC: true } },
       { char: 'b', style: { BOLD: true, ITALIC: false } },
-
     ])).toEqual('<p><i>i</i><b>b</b></p>');
+  });
+
+  it('should return a proper paragraph with mixed text 12', () => {
+    expect(composer([
+      { char: 'i', style: { BOLD: false, ITALIC: true } },
+      { char: 'b', style: { BOLD: true, ITALIC: true } },
+    ])).toEqual('<p><i>i<b>b</b></i></p>');
+  });
+
+  it('should return a proper paragraph with mixed text 12', () => {
+    expect(composer([
+      { char: 'i', style: { BOLD: false, ITALIC: true } },
+      { char: 't', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: true, ITALIC: true } },
+    ])).toEqual('<p><i>i<b>tb</b></i></p>');
+  });
+
+  it('should return a proper paragraph with mixed text 12', () => {
+    expect(composer([
+      { char: 'i', style: { BOLD: false, ITALIC: true } },
+      { char: 't', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: false, ITALIC: true } },
+    ])).toEqual('<p><i>i<b>tb</b>b</i></p>');
+  });
+
+  it('should return a proper paragraph with mixed text 12', () => {
+    expect(composer([
+      { char: 'i', style: { BOLD: false, ITALIC: true } },
+      { char: 't', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: false, ITALIC: true } },
+      { char: 'b', style: { BOLD: false, ITALIC: false } },
+    ])).toEqual('<p><i>i<b>tb</b>b</i>b</p>');
+  });
+
+  it('should return a proper paragraph with mixed text 12', () => {
+    expect(composer([
+      { char: 'i', style: { BOLD: true, ITALIC: false } },
+      { char: 't', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: true, ITALIC: true } },
+      { char: 'b', style: { BOLD: false, ITALIC: true } },
+      { char: 'b', style: { BOLD: false, ITALIC: false } },
+    ])).toEqual('<p><b>i<i>tb</i></b><i>b</i>b</p>');
   });
 });
