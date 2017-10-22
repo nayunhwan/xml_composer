@@ -40,9 +40,9 @@ module.exports = function(styledString) {
   let flagBold = false;
   let flagItalic = false;
 
-  let boldStack = [];
-  let italicStack = [];
-  let bothStack = [];
+  let boldQueue = [];
+  let italicQueue = [];
+  let bothQueue = [];
 
   styledString.forEach(item => {
     if (!flagBold && flagBold !== item.style.BOLD) flagBold = true;
@@ -51,12 +51,12 @@ module.exports = function(styledString) {
     if (flagItalic && !item.style.ITALIC) {
       let tmpStr = '';
       if (flagBold){
-        tmpStr = bothStack.length !== 0 ? `<i>${bothStack.join('')}</i>` : '';
-        bothStack = [];
-        boldStack.push(tmpStr);
+        tmpStr = bothQueue.length !== 0 ? `<i>${bothQueue.join('')}</i>` : '';
+        bothQueue = [];
+        boldQueue.push(tmpStr);
       } else {
-        tmpStr = italicStack.length !== 0 ? `<i>${italicStack.join('')}</i>` : '';
-        italicStack = [];
+        tmpStr = italicQueue.length !== 0 ? `<i>${italicQueue.join('')}</i>` : '';
+        italicQueue = [];
         basedStr += tmpStr;
       }
       flagItalic = false;
@@ -64,34 +64,45 @@ module.exports = function(styledString) {
     if (flagBold && !item.style.BOLD) {
       let tmpStr = '';
       if (flagItalic){
-        tmpStr = bothStack.length !== 0 ? `<b>${bothStack.join('')}</b>` : '';
-        bothStack = [];
-        italicStack.push(tmpStr);
+        tmpStr = bothQueue.length !== 0 ? `<b>${bothQueue.join('')}</b>` : '';
+        bothQueue = [];
+        italicQueue.push(tmpStr);
       } else {
-        tmpStr = boldStack.length !== 0 ? `<b>${boldStack.join('')}</b>` : '';
-        boldStack = [];
+        tmpStr = boldQueue.length !== 0 ? `<b>${boldQueue.join('')}</b>` : '';
+        boldQueue = [];
         basedStr += tmpStr;
       }
       flagBold = false;
     }
 
-    if (flagBold && !flagItalic) boldStack.push(item.char);
-    if (flagItalic && !flagBold) italicStack.push(item.char);
-    if (flagBold && flagItalic) bothStack.push(item.char);
+    if (flagBold && !flagItalic) boldQueue.push(item.char);
+    if (flagItalic && !flagBold) italicQueue.push(item.char);
+    if (flagBold && flagItalic) bothQueue.push(item.char);
     if (!flagBold && !flagItalic) basedStr += item.char;
   });
-  console.log(boldStack, italicStack, bothStack, flagBold, flagItalic);
 
+  console.log(boldQueue, italicQueue, bothQueue, flagBold, flagItalic);
   if (flagBold && flagItalic){
-    basedStr += bothStack.length !== 0 ? `<b><i>${bothStack.join('')}</i></b>` : '';
+    if (boldQueue.length === 0 && italicQueue.length === 0) {
+      basedStr += bothQueue.length !== 0 ? `<b><i>${bothQueue.join('')}</i></b>` : '';
+    } else if (boldQueue.length !== 0) {
+      boldQueue.push(`<i>${bothQueue.join('')}</i>`);
+      bothQueue = [];
+      basedStr += `<b>${boldQueue.join('')}</b>`;
+    } else if (italicQueue.length !== 0) {
+      italicQueue.push(`<b>${bothQueue.join('')}</b>`);
+      bothQueue = [];
+      basedStr += `<i>${italicQueue.join('')}</i>`;
+    }
   } else if (flagBold) {
-    basedStr += italicStack.length !== 0 ? `<i>${italicStack.join('')}</i>` : '';
-    basedStr += boldStack.length !== 0 ? `<b>${boldStack.join('')}</b>` : '';
+    basedStr += italicQueue.length !== 0 ? `<i>${italicQueue.join('')}</i>` : '';
+    basedStr += boldQueue.length !== 0 ? `<b>${boldQueue.join('')}</b>` : '';
   } else if (flagItalic) {
-    basedStr += boldStack.length !== 0 ? `<b>${boldStack.join('')}</b>` : '';
-    basedStr += italicStack.length !== 0 ? `<i>${italicStack.join('')}</i>` : '';
+    basedStr += boldQueue.length !== 0 ? `<b>${boldQueue.join('')}</b>` : '';
+    basedStr += italicQueue.length !== 0 ? `<i>${italicQueue.join('')}</i>` : '';
   }
 
+  console.log(boldQueue, italicQueue, bothQueue, flagBold, flagItalic);
   basedStr += '</p>';
   return basedStr; // FILL ME
 }
